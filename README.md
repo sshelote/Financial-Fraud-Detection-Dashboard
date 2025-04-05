@@ -5,114 +5,132 @@
 
 ## Problem Statement
 
-The goal of this project is to analyse a dataset related to financial transactions from a simulated banking system. Using Power BI, the objective is to identify key trends, analyze patterns, and detect possible fraudulent activities. This dashboard can help financial institutions understand where fraud typically occurs and implement better fraud detection measures.
+The goal of this project is to analyse a dataset containing financial transactions from a simulated banking environment. Using Power BI, this dashboard helps visualize transaction behavior and detect potentially fraudulent activities based on type, time, and transaction amount. It provides insights into high-risk patterns to support financial fraud monitoring.
 
-# Dataset Overview
+## Dataset Overview
 
-The dataset simulates 30 days of transactions and includes the following columns:
+The dataset simulates 30 days of banking transactions and includes the following columns:
 
-•	step: Time step in hours (from 1 to 744 — representing 30 days).
+•	<ins>step</ins> – Time unit (1 hour per step, 744 total steps for 30 days).
 
-•	type: Type of transaction (e.g., PAYMENT, CASH_OUT, TRANSFER, DEBIT, CASH_IN).
+•	<ins>type</ins> – Transaction type (CASH_IN, CASH_OUT, TRANSFER, PAYMENT, DEBIT).
 
-•	amount: Amount of the transaction in local currency.
+•	<ins>amount</ins> – Transaction amount in local currency.
 
-•	nameOrig: Name of the customer initiating the transaction.
+•	<ins>nameOrig</ins> – Account initiating the transaction.
 
-•	oldbalanceOrg: Balance of the origin account before the transaction.
+•	<ins>oldbalanceOrg</ins> – Balance before transaction (origin account).
 
-•	newbalanceOrig: Balance of the origin account after the transaction.
+•	<ins>newbalanceOrig</ins>– Balance after transaction (origin account).
 
-•	nameDest: Name of the recipient account.
+•	<ins>nameDest</ins> – Recipient account.
 
-•	oldbalanceDest: Balance of the destination account before the transaction.
+•	<ins>oldbalanceDest</ins> – Balance before transaction (destination account).
 
-•	newbalanceDest: Balance of the destination account after the transaction.
+•	<ins>newbalanceDest</ins> – Balance after transaction (destination account).
 
-•	isFraud: Whether the transaction was fraudulent (1 = fraud, 0 = not fraud).
+•	<ins>isFraud</ins>– 1 if fraudulent, 0 if not.
 
-•	isFlaggedFraud: Whether the transaction was flagged as a large transfer (more than 200,000 units).
+•	<ins>isFlaggedFraud</ins> – 1 if flagged due to amount > 200,000.
 
-# Steps Followed
-**Step 1: Load Data into Power BI**
+## Steps Followed
 
-•	Imported the dataset (CSV format) into Power BI.
+**Step 1: Data Import**
 
-•	Reviewed column names and data types to ensure accuracy.
+•	Loaded the dataset into Power BI in CSV format.
 
-**Step 2: Data Cleaning and Transformation**
+•	Verified columns and data types.
 
-•	Removed null and duplicate values.
+**Step 2: Data Preparation**
 
-•	Ensured that numeric columns (amount, balances) are correctly formatted.
+•	Cleaned the data by checking for nulls and duplicates.
 
-•	Created calculated columns for:
-+	Transaction Hour from the "step" column.
-+	Balance Difference before and after  transactions for both sender and receiver.
+•	Ensured numeric columns were in proper format.
 
-•	Renamed column headers for better readability in visuals.
+•	Added basic formatting for clarity in visuals.
 
-**Step 3: Creating Visuals**
+## Dashboard Visuals
 
-1. Transaction Types and Volume
+**1. Count and Sum of Amount by Transaction Type**
 
-•	Bar chart to show the total count of each transaction type.
+####	Bar Chart (Count) shows most transactions are:
 
-•	Column chart to display the total amount transacted per type.
+- CASH_OUT (~2.17M)
 
-•	Pie chart for percentage distribution of transaction types.
+-	PAYMENT (~2.10M)
 
-2. Fraud vs. Non-Fraud Analysis
+####	Line Chart (Sum) shows highest transaction amount in:
 
-•	Donut chart comparing fraudulent vs. non-fraudulent transactions.
+-	TRANSFER (~470B)
 
-•	Bar chart showing number of frauds by transaction type.
+-	CASH_OUT and CASH_IN also contribute significantly.
 
-•	Time-series chart to show fraud over time (based on the step column).
+**2. Fraud Distribution**
 
-•	Scatter plot of fraudulent transaction amounts to detect high-value trends.
+####	Donut Chart indicates:
 
-3. Flagged Transactions
+-	99.87% transactions are non-fraudulent.
 
-•	Table to highlight transactions flagged as frauds due to high value (>200,000).
+-	Only 0.13% (~8.3K) are fraudulent.
 
-•	Bar chart of flagged vs. non-flagged transactions.
+**3. Trend of Fraudulent and Non-Fraudulent Transactions Over Time**
 
-4. Account Balance Trends
+####	Line Chart by step shows:
 
-•	Clustered bar chart comparing old and new balances for origin and destination accounts.
+-	Fraudulent activity spikes at multiple time intervals.
+-	Most steps have 0 fraud, but certain periods show higher volume (e.g., 51K, 46K counts).
 
-•	Line chart to show how balances change over time during fraudulent transactions.
+**4. Fraudulent Transactions by Type**
 
-5. Filters and Interactivity
+####	Horizontal Bar Chart:
 
-+	Added slicers for:
-+	Transaction type
-+	Fraud status
-+	Time (steps)
-+	Amount ranges
+-	Fraud occurs only in TRANSFER and CASH_OUT.
 
-•	Enabled drill-through feature for detailed transaction analysis.
+-	No fraud in PAYMENT, CASH_IN, or DEBIT.
 
-## Key Insights
+**5. Step Count, isFraud Sum, and Amount by Type**
 
-1.	Fraud occurs mostly in CASH_OUT and TRANSFER transactions.
+###	This visual combines:
 
-2.	Most fraudulent transactions have high amounts, often exceeding 100,000.
+-	Step counts
 
-3.	The majority of transactions are not fraud, but fraudulent ones have higher amounts and sudden changes in account balances.
+-	Fraud counts (isFraud)
 
-4.	Flagged transactions (over 200,000) do not always align with actual frauds, highlighting gaps in rule-based systems.
+-	Total amount per type
 
-5.	The origin accounts in fraud cases often have sufficient balance, but the destination accounts get emptied post-fraud.
+•	CASH_OUT and TRANSFER dominate in fraud count and amount.
+
+**6. Sum of Amount by Type and Fraud Status**
+
+####	Stacked Bar Chart shows:
+
+-	Fraudulent TRANSFER transactions: ~0.46T
+
+-	Fraudulent CASH_OUT transactions: ~0.38T
+
+-	Other transaction types have no fraud (0T).
+
+ ## Key Insights
+
+1.	CASH_OUT and TRANSFER are the only transaction types associated with fraudulent behavior.
+
+2.	Fraudulent transactions have very high amounts, indicating large-scale fund movement.
+
+3.	Majority of transactions are legitimate, but the small percentage of fraud involves large monetary values.
+
+4.	Fraud occurs in short bursts during specific time windows (visible in trend chart).
+
+5.	No fraudulent activity is observed in PAYMENT, CASH_IN, or DEBIT transaction types.
 
 ## Conclusion
 
-The Power BI dashboard successfully highlights suspicious trends and high-risk transaction types. These insights can help banks develop stronger fraud detection systems by monitoring transaction type, amount, time patterns, and balance behavior.
+The Power BI dashboard effectively highlights patterns in transaction behavior and identifies key fraud trends. By focusing on transaction type, volume, and time, the dashboard pinpoints where fraud is likely to occur. This helps in better monitoring and implementing targeted fraud detection rules—especially in TRANSFER and CASH_OUT transactions.
+
+
 
 
 # Snapshot of Dashboard 
-https://github.com/user-attachments/assets/db629ff8-2f95-412c-887a-fb3fdf12b681
+![Image](https://github.com/user-attachments/assets/db629ff8-2f95-412c-887a-fb3fdf12b681)
 
 
 
